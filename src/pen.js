@@ -35,7 +35,8 @@ class Pen{
         var x = this.circle_x;
         var y = this.circle_y;
         var circle_e = this.circle_e;
-        print("ANTEA", x, y); 
+        //print("ANTEA", x, y); 
+        this._drawCircle(x, y)
         while(x <= y){
             circle_e += 2*x + 1;
             x++;
@@ -69,4 +70,98 @@ class Pen{
         this.tiles.push({x: -y + this.centro_x, y: -x + this.centro_y});  
     }
 
+    draw_curve(points){
+        let pontos_final = []
+        for(var i = 0; i<50; i++){
+            fill('blue');
+            let pontos = bezier_point(points, i/50);
+            pontos_final.push({x: pontos[0], y:pontos[1]});
+        }
+        return pontos_final;
+    }
+
+    draw_polilinha(points){
+        var final_points = [];
+        for(var i = 0; i < points.length; i++){
+            var next = i+1;
+            if(i == points.length -1){
+                next = 0;
+            }
+
+            let line = this.drawLine(points[i][0], points[i][1], points[next][0], points[next][1]);
+            final_points = final_points.concat(line);//push({x: line[0], y: line[1]});
+        }
+        return final_points;
+    }
 }
+
+function bezier_point(points, t){
+  var pts = new Array(points.length);
+  pts = copy_by_value(points);
+    for(var r = 1; r< points.length; r++){
+     for(var i = 0; i<points.length-r; i++){
+       pts[i] = add(product(pts[i], (1-t)), product(pts[i+1], t));
+   }
+  }
+  print(pts[0])
+  return _round(pts[0]);
+}
+
+
+function _round(arr, n){
+  out = [];
+  for(var i=0;i<arr.length; i++){
+    out.push(round(arr[i]));
+  }
+  return out;
+}
+
+function add(arr, arr2){
+  out = [];
+  for(var i=0;i<arr.length; i++){
+    out.push(arr[i] + arr2[i]);
+  }
+  return out;
+}
+
+function copy_by_value(arr){
+  var ar2 = [];
+  for (var i = 0, len = arr.length; i < len; i++) {
+    ar2[i] = []; // empty object to hold properties added below
+    for (var prop in arr[i]) {
+        ar2[i][prop] = arr[i][prop]; // copy properties from arObj to ar2
+    }
+  }
+  return ar2;
+
+
+function bezier_point(points, t){
+  var pts = new Array(points.length);
+  pts = copy_by_value(points);
+  //print("EIIII", pts[2])
+  
+  //pts = points.slice()
+  // for(var i = 0; i < points.length; i++){
+  //   pts[i] = points[i];
+  //}
+    for(var r = 1; r< points.length; r++){
+     for(var i = 0; i<points.length-r; i++){
+       pts[i] = add(product(pts[i], (1-t)), product(pts[i+1], t));
+        //pts[i] = (1-t)*pts[i] + t*pts[i+1];
+   }
+  }
+  print(pts[0])
+  return _round(pts[0]);
+}
+
+
+}
+
+function product(arr, n){
+    for(var i=0;i<arr.length; i++){
+      arr[i] = arr[i]*n;
+    }
+    return arr;
+  }
+
+

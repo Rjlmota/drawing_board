@@ -23,10 +23,12 @@ function draw() {
 }
 
 function mouseClicked(){
+  var pontos_controle = [[1,1], [1, 40],[40, 1], [40, 40]];
 
   //let tiles_co = (pen.drawLine(1,1,100,50));
-  let tiles_co = (pen.drawCircle());
-
+  //let tiles_co = (pen.drawCircle());
+  //let tiles_co = (pen.draw_curve(pontos_controle));
+  let tiles_co = (pen.draw_polilinha(pontos_controle));
   print(tiles_co)
   for (let i = 0; i < tiles_co.length; i++){
     board.tiles.push(new Tile(tiles_co[i].x, tiles_co[i].y, on=true))
