@@ -15,17 +15,37 @@ function rotate_at_origin(object, angle){
     sin = Math.sin(toRadians(angle));
     cos = Math.cos(toRadians(angle));
 
-    print(sin);
-    print(cos);
-
-    object.push([1, 1, 1, 1]);
-
-    let matrix=[[cos, -sin, 0], [sin, cos, 0], [0, 0, 1]]
+    let matrix=[[cos, -sin, 0], [sin, cos, 0]]
 
     a =  multiply(object, matrix);
     a = round_matrix(a);
-    print("ARREDONDADA", a);
     return round_matrix(a);
+}
+
+function move_object(object, xy){
+  matrix = new Array(object.length);
+  for (var i = 0; i< object.length; i++){
+    matrix[i] = xy//[x, y]//new Array(object[i].length);
+  }
+
+  return sum_matrix(object, matrix);
+
+}
+
+function sum_matrix(m1, m2){
+  for(var i = 0; i < m1.length; i++){
+    for (var j = 0; j < m1[i].length; j++){
+      m1[i][j] = m1[i][j] + m2[i][j];
+    }
+  }
+  return m1;
+}
+
+function move_pivot_to_origin(object, pivot, angle){
+  //pivot tem um x e y
+  //descobrir quanto preciso diminuir para x e y ficarem  = 0
+
+  
 }
 
 //https://stackoverflow.com/questions/27205018/multiply-2-matrices-in-javascript
