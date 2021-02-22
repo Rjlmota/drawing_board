@@ -10,19 +10,18 @@ class Board{
         this.coloring = [];
     } 
     grid() {
-        clear();
-        for (var x = -width; x < width; x += this.tile_size) {
-           line(x, -width, x, height);
+        for (var x = -width; x <= width/2; x += this.tile_size) {
+           line(x, -width, x, height/2);
         //for (var x = 0; x < width; x += this.tile_size) {
-          line(x, 0, x, height);
-            for (var y = -height; y < height; y += this.tile_size) {
-            line(-height, y, width, y);
+          line(x, 0, x, height/2);
+            for (var y = -height; y <= height/2; y += this.tile_size) {
+            line(-height, y, width/2, y);
         //for (var y = 0; y < height; y += this.tile_size) {
          //   line(0, y, width, y);
           }
         }
 
-    this.clearBoard();
+    //this.clearBoard();
     //print(this.drawings);
     for (var i = 0; i < this.drawings.length; i++){
         var drawing_coods = this.drawings[i].self_draw()
@@ -30,7 +29,7 @@ class Board{
         //this.tiles.push(this.drawings[i].self_draw());
         for(var j = 0; j < drawing_coods.length; j++){
             //print("A", new Tile(drawing_coods[j].x, drawing_coods[j].y))
-            this.tiles.push(new Tile(drawing_coods[j].x, drawing_coods[j].y, true, 'red'));//, color='red'));
+            this.tiles.push(new Tile(drawing_coods[j].x, drawing_coods[j].y,'red', true));//, color='red'));
 
         }
     }
@@ -39,7 +38,8 @@ class Board{
             this.tiles.push(this.coloring[j]);
 
         }
-        
+    
+    //print(this.tiles)
     for (let i = 0; i< this.tiles.length;i++){
         let tile = this.tiles[i]
         tile.render()
@@ -78,7 +78,6 @@ class Board{
         }
 
         //print("CURRENT", current, current.color, edge_color, _color);
-
             if(current.color != edge_color && current.color != _color ){
                 //print("changing color")
                 current.color = _color;
@@ -93,11 +92,34 @@ class Board{
    clearBoard(){
        this.tiles = []
    }
+
+   update(){
+       this.grid();
+   }
+
+   draw_this(tiles){
+       this.drawings.push(tiles);
+   }
+
+   find_drawing(x, y){
+       x = int(x/20);
+       y = int(y/20);
+
+       print("searching for", x, y);
+       for(var i = 0; i< this.drawings.length; i++){
+           for (var j = 0; j < this.drawings[i].points.length; j++){
+               if(x == this.drawings[i].points[j][0] && y== this.drawings[i].points[j][1]){
+                   print("FOUND:", this.drawings[i])
+                   return [this.drawings[i], [x, y]];
+               }
+           }
+       }
+   }
 }
 
 
 class Tile {
-    constructor (x, y, on= true, color='red', size=20){
+    constructor (x, y, color, on, size=20){
         this.x = x*size;
         this.y = y*size;
         this.size = size;
@@ -106,13 +128,14 @@ class Tile {
     }
 
 
-    async render(){
+    render(){
         if(this.on){
         //await sleep(2000);
             //translate(10, 10);
             //translate(500, 500);
 
             fill(this.color);
+            //print(this.color)
             rect(this.x,this.y, this.size, this.size);            
          }
     }

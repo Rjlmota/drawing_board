@@ -1,3 +1,45 @@
+perspC = [
+  [-16, 0, 0, 0],
+  [0, -16, 0, 0],
+  [0, 0, -16, 0],
+  [0, 0, 1, 0]
+]
+
+orth = [
+  [1, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 1]
+]
+
+
+function _orth(solid){
+  print(solid);
+  var resultado = multiply(orth, solid);
+
+  print('primeira', resultado)
+  //print(resultado[resultado.length-1].length)
+
+  print(resultado);
+  return resultado;
+}
+
+function _perspec(solid){
+
+  print(solid);
+  var resultado = multiply(perspC, solid);
+
+  print('primeira', resultado)
+  //print(resultado[resultado.length-1].length)
+  for(var i = 0; i < resultado[resultado.length-1].length; i++){
+    for(var k = 0; k < resultado.length; k++){
+      resultado[k][i] = resultado[k][i]/resultado[resultado.length-1][i];
+    }
+  }
+  print(resultado);
+  return resultado;
+}
+
 function toRadians (angle) {
     return angle * (Math.PI / 180);
   }
@@ -23,6 +65,7 @@ function rotate_at_origin(object, angle){
 }
 
 function move_object(object, xy){
+
   matrix = new Array(object.length);
   for (var i = 0; i< object.length; i++){
     matrix[i] = xy//[x, y]//new Array(object[i].length);
@@ -38,6 +81,7 @@ function sum_matrix(m1, m2){
       m1[i][j] = m1[i][j] + m2[i][j];
     }
   }
+  print("SOMA DAS MATRIZES", m1);
   return m1;
 }
 
@@ -80,7 +124,15 @@ function multiply(a, b) {
     }
     return out;
   }
-  
+
+  function to_array(arr){
+    ar= [];
+    for(var i = 0; i<arr.length; i++){
+      ar.push([arr[i].x, arr[i].y])
+    }
+    return ar;
+  }
+
   function copy_by_value(arr){
     var ar2 = [];
     for (var i = 0, len = arr.length; i < len; i++) {
